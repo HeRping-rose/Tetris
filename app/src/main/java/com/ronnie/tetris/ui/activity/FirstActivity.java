@@ -1,4 +1,4 @@
-package com.ronnie.tetris;
+package com.ronnie.tetris.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,16 +9,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.ronnie.tetris.utils.PrefsUtils;
+import com.ronnie.tetris.R;
+import com.ronnie.tetris.ui.view.StatefulImageView;
+import com.ronnie.tetris.TetrisActivity;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class FirstActivity extends AppCompatActivity {
 
@@ -97,9 +95,10 @@ public class FirstActivity extends AppCompatActivity {
                         tvTitle.setText("登录成功");
                         clearState();
 
-                        Intent intent=new Intent(this, TetrisActivity.class);
+                        //跳转页面
+//                        startActivity(new Intent(this, TetrisActivity.class));//自己写
 
-                        startActivity(intent);
+                        startActivity(new Intent(this, GameActivity.class));//pxd
 
                     }else {
                         tvTitle.setText("图案密码错误,请重新输入");

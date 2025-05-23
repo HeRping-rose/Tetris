@@ -8,21 +8,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.ronnie.tetris.databinding.ActivityTetrisBinding;
+
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class TetrisActivity extends AppCompatActivity {
-
-
-
-
+    ActivityTetrisBinding tetrisBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_tetris);
-
+        tetrisBinding = ActivityTetrisBinding.inflate(getLayoutInflater());
+        setContentView(tetrisBinding.getRoot());
+//        setContentView(R.layout.activity_tetris);
 
     }
 

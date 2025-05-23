@@ -1,4 +1,4 @@
-package com.ronnie.tetris;
+package com.ronnie.tetris.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.ronnie.tetris.R;
 
 import java.util.ArrayList;
 import java.util.List;

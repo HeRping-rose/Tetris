@@ -21,7 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 //自定义View  需要一个控件?-->控件的布局与显示都要自己绘制-->继承View
-public class BlockView extends View {
+public class  BlockView extends View {
     private Map<TetrominoType, Tetromino> tetrominos = new HashMap<>();
 
 
@@ -55,6 +55,7 @@ public class BlockView extends View {
         currentTetromino = tetrominos.get(TetrominoType.T);
         startGameLoop();
         initUI();//初始化UI,UI界面相关都写在里面
+//        stopGameLoop();
     }
 
     private void startGameLoop() {
@@ -532,8 +533,9 @@ enum TetrominoType {
 }
 
 class Tetromino {
-    public int[][] shape;
-    public Bitmap bitmap;
+//    俄罗斯方块
+    public int[][] shape;//形状
+    public Bitmap bitmap;//位图 视图
 
     public Tetromino(int[][] shape, Bitmap bitmap) {
         this.shape = shape;

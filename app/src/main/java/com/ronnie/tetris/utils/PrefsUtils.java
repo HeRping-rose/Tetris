@@ -1,4 +1,4 @@
-package com.ronnie.tetris;
+package com.ronnie.tetris.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
