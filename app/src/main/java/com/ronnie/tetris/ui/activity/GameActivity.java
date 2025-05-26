@@ -24,17 +24,31 @@ public class GameActivity extends AppCompatActivity {
 
         setContentView(gameBinding.getRoot());
 
-        //配置GameCenter
+        //配置GameCenter  绑定View配置
         GameCenter.defaultCenter.previewView=gameBinding.previewView;
-
+        GameCenter.defaultCenter.gameView=gameBinding.gameView;
 
         //给按钮添加点击事件
         initUI();
     }
 
+    //初始化UI控件
     private void initUI() {
         gameBinding.playBtn.setOnClickListener(v->{
             GameCenter.defaultCenter.start();
+        });
+        //添加操作按钮点击事件
+        gameBinding.ivRotate.setOnClickListener(v->{
+            GameCenter.defaultCenter.rotate();
+        });
+        gameBinding.ivDown.setOnClickListener(v->{
+            GameCenter.defaultCenter.moveDown();
+        });
+        gameBinding.ivLeft.setOnClickListener(v->{
+            GameCenter.defaultCenter.moveLeft();
+        });
+        gameBinding.ivRight.setOnClickListener(v->{
+            GameCenter.defaultCenter.moveRight();
         });
     }
 }

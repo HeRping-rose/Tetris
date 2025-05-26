@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class TetrisActivity extends AppCompatActivity {
     ActivityTetrisBinding tetrisBinding;
+    private BlockView blockView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,15 @@ public class TetrisActivity extends AppCompatActivity {
         setContentView(tetrisBinding.getRoot());
 //        setContentView(R.layout.activity_tetris);
 
+        blockView=tetrisBinding.blockView;
+        tetrisBinding.ivStop.setOnClickListener(v->{
+            blockView.togglePause();
+            tetrisBinding.ivStop.setImageResource(
+                    blockView.isPaused() ? R.drawable.play : R.drawable.stop
+            );
+        });
+
     }
+
 
 }

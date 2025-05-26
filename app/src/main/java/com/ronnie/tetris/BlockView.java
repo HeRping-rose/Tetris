@@ -24,8 +24,6 @@ import java.util.TimerTask;
 public class  BlockView extends View {
     private Map<TetrominoType, Tetromino> tetrominos = new HashMap<>();
 
-
-
     private int BLOCK_SIZE=dp2px(20);
     private final int cols = 10;
     private final int rows = 20;
@@ -57,26 +55,25 @@ public class  BlockView extends View {
         initUI();//初始化UI,UI界面相关都写在里面
 //        stopGameLoop();
     }
-
     private void startGameLoop() {
         handler.removeCallbacks(gameLoopRunnable); // 清除之前的任务
         handler.post(gameLoopRunnable); // 启动新的游戏循环
-        startTimer();// 重置开始时间
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (isPaused || isGameOver) return;
-                updateElapsedTime();
-                shapeY++;
-                if (checkCollision()) {
-                    shapeY--;
-                    mergeShape();
-                    resetShape();
-                }
-                postInvalidate(); // 触发 onDraw
-            }
-        }, 0, 500); // 每 500ms 触发一次
+        // startTimer();// 重置开始时间
+        // Timer timer = new Timer();
+        // timer.schedule(new TimerTask() {
+        //     @Override
+        //     public void run() {
+        //         if (isPaused || isGameOver) return;
+        //         updateElapsedTime();
+        //         shapeY++;
+        //         if (checkCollision()) {
+        //             shapeY--;
+        //             mergeShape();
+        //             resetShape();
+        //         }
+        //         postInvalidate(); // 触发 onDraw
+        //     }
+        // }, 0, 500); // 每 500ms 触发一次
     }
     private void stopGameLoop() {
         handler.removeCallbacks(gameLoopRunnable); // 停止游戏循环
@@ -85,20 +82,17 @@ public class  BlockView extends View {
         @Override
         public void run() {
             if (isPaused || isGameOver) return;
-
             shapeY++; // 方块下落
             if (checkCollision()) {
                 shapeY--;
                 mergeShape();
                 resetShape();
             }
-
             updateElapsedTime(); // 更新时间
             postInvalidate(); // 刷新界面
             handler.postDelayed(this, 500); // 每500ms更新一次
         }
     };
-
     private boolean checkGameOver() {
         // 检查新的方块是否在顶部碰到已有的方块
         for (int x = 0; x < currentTetromino.shape[0].length; x++) {
@@ -113,15 +107,12 @@ public class  BlockView extends View {
         }
         return false; // 游戏没有结束
     }
-
-
     //游戏暂停方法
     public void togglePause() {
         isPaused = !isPaused;
         invalidate();
     }
     private void initUI() {
-
     }
     private void loadTetrominos(Context context) {
         tetrominos.put(TetrominoType.I, new Tetromino(
@@ -182,8 +173,6 @@ public class  BlockView extends View {
                 BitmapFactory.decodeResource(context.getResources(), R.drawable.yellow)
         ));
     }
-
-
     //重写测量方法  父容器测量自身和子控件的尺寸 layout_width layout_height
     //父类测量子类时,传递过来的约束,测量参数
     //widthMeasureSpec 32位 前两位+后30位
@@ -194,36 +183,28 @@ public class  BlockView extends View {
     //heightMeasureSpec 32位 前两位+后30位
     //前两位决定父类的测量模式  后30位决定父类测量时给的参考值
     //    200dp   -->EXACTLY+200dp  使用了MeasureSpec类   getSize(),,getMode()
-
     //MEASURED_STATE_TOO_SMALL  子控件提供的值为精确值
-
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 //        //拿到宽度模式
 //        int wMode = MeasureSpec.getMode(widthMeasureSpec);
 //        //拿到宽度的参考尺寸
 //        int wsize = MeasureSpec.getSize(widthMeasureSpec);
-
         //计算正式高度宽度  精确值EXACTLY 0dp match_parent 200dp  match_Constrain
         //当为wrap_content是AT_MOST
         int desiredWidth = 3*BLOCK_SIZE;
         int desiredHeight= 3*BLOCK_SIZE;
         int w=resolveSizeAndState(desiredWidth, widthMeasureSpec, MEASURED_STATE_TOO_SMALL);
         int h=resolveSizeAndState(desiredHeight, heightMeasureSpec, MEASURED_STATE_TOO_SMALL);
-
         //配置自己的正式尺寸
         setMeasuredDimension(w,h);
-
         //拿到高度模式
 //        int hMode = MeasureSpec.getMode(heightMeasureSpec);
 //        //拿到高度的参考尺寸
 //        int hsize = MeasureSpec.getSize(heightMeasureSpec);
     }
-
     //显示内容 绘制
 //    view:画板
 //    canvas:画布
@@ -242,14 +223,10 @@ public class  BlockView extends View {
     private Handler handler = new Handler();
     //将res转化成bitmap类型
     private Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.blue);
-
-
     private void startTimer() {
         startTime = System.currentTimeMillis();
     }
-
     private void updateElapsedTime() {
-
         elapsedTime = (System.currentTimeMillis() - startTime) / 1000; // 秒
     }
     // 不要在onDraw里面创建对象  //绘制区域
@@ -258,7 +235,9 @@ public class  BlockView extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         drawArena(canvas);
+        drawGrid(canvas);
         drawShape(canvas);
+
         //显示“游戏结束”文字
         if (isGameOver) {
             mPaint.setColor(Color.RED);
@@ -283,22 +262,24 @@ public class  BlockView extends View {
 //        mPaint.setColor(Color.GREEN);
 //        mPaint.setStrokeWidth(dp2px(4));
 //        canvas.drawRect(dp2px(4), dp2px(4), dp2px(32), dp2px(32), mPaint);
-
         //绘制圆形
 //        canvas.drawCircle(getWidth()/2f,getHeight()/2f,getHeight()/2f,mPaint);
         //画线
 //        canvas.drawLine(0f,0f,getWidth(),getHeight(),mPaint);
-
         //终点随触摸点走
 //        canvas.drawLine(0f,0f,tX,tY,mPaint);
-
-
 //        canvas.drawBitmap(bitmap,0f,0f,null);
-
-
 //        canvas.drawBitmap(bitmap,null,rect,null);
-
-
+    }
+    // 绘制背景网格
+    private void drawGrid(Canvas canvas) {
+        mPaint.setColor(Color.BLUE);
+        for (int i = 0; i <= cols; i++) {
+            canvas.drawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, rows * BLOCK_SIZE, mPaint);
+        }
+        for (int i = 0; i <= rows; i++) {
+            canvas.drawLine(0, i * BLOCK_SIZE, cols * BLOCK_SIZE, i * BLOCK_SIZE, mPaint);
+        }
     }
     private void drawArena(Canvas canvas) {
         for (int y = 0; y < arena.length; y++) {
@@ -342,6 +323,8 @@ public class  BlockView extends View {
             }
         }
     }
+
+    // 判断碰撞
     private boolean checkCollision() {
         for (int y = 0; y < shape.length; y++) {
             for (int x = 0; x < shape[y].length; x++) {
@@ -357,6 +340,7 @@ public class  BlockView extends View {
         return false;
     }
 
+    // 合并图形
     private void mergeShape() {
         for (int y = 0; y < shape.length; y++) {
             for (int x = 0; x < shape[y].length; x++) {
@@ -367,9 +351,9 @@ public class  BlockView extends View {
         }
         clearFullRows(); // 清除已满的行
     }
+    // 清除满行
     private void clearFullRows() {
         int rowsCleared = 0;
-
         for (int y = 0; y < arena.length; y++) {
             boolean full = true;
             for (int x = 0; x < arena[y].length; x++) {
@@ -378,7 +362,6 @@ public class  BlockView extends View {
                     break;
                 }
             }
-
             if (full) {
                 // 行满了：整行向下移一行
                 for (int i = y; i > 0; i--) {
@@ -391,7 +374,6 @@ public class  BlockView extends View {
                 rowsCleared++;
             }
         }
-
         // 加分：1 行 100 分，2 行 300，3 行 500，4 行 800 分（标准计分）
         switch (rowsCleared) {
             case 1: score += 100; break;
@@ -401,6 +383,7 @@ public class  BlockView extends View {
         }
     }
 
+    // 重置形状
     private void resetShape() {
         TetrominoType[] types = TetrominoType.values();
         int index = (int) (Math.random() * types.length);
@@ -461,9 +444,6 @@ public class  BlockView extends View {
                 invalidate();
                 break;
         }
-//        tX=event.getX();
-//        tY=event.getY();
-//        invalidate();//强制刷新
         return true;
     }
     private void restartGame() {
@@ -527,6 +507,9 @@ public class  BlockView extends View {
         return result;
     }
 
+    public boolean isPaused() {
+        return isPaused;
+    }
 }
 enum TetrominoType {
     I, O, T, S, Z, J, L

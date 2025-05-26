@@ -9,6 +9,9 @@ public class Block {
     public int y;
     private int blockRes=0; //方块显示图片资源
 
+    // 记录自己的shape二维数组
+    private int [][] mShape;
+
     //  记录当前方块类型
     private BlockType type=BlockType.L;
 
@@ -18,16 +21,62 @@ public class Block {
 
         type=getRandomType();
         blockRes=getRandomRes();
+        mShape = BlockShape.getShape(type);
     }
 
     //  获取图形资源
     public int[][] getShape(){
-        return BlockShape.getShape(type);
-
+        return mShape;
     }
     public int getResourse(){
         return blockRes;
     }
+
+    //相关操作方法
+    public void rotate() {
+        if (type == BlockType.O) return;
+
+        int n = mShape.length;
+
+        // 逐层旋转
+        for (int layer = 0; layer < n / 2; layer++) {
+            int first = layer;
+            int last = n - 1 - layer;
+
+            for (int i = first; i < last; i++) {
+                int offset = i - first;
+
+                // 保存左上角的值
+                int top = mShape[first][i];
+
+                // 左上角 <- 左下角
+                mShape[first][i] = mShape[last - offset][first];
+
+                // 左下角 <- 右下角
+                mShape[last - offset][first] = mShape[last][last - offset];
+
+                // 右下角 <- 右上角
+                mShape[last][last - offset] = mShape[i][last];
+
+                // 右上角 <- 左上角
+                mShape[i][last] = top;
+            }
+        }
+    }
+    public void moveDown() {
+        y++;
+    }
+    public void moveUp() {
+        y--;
+    }
+    public void moveLeft() {
+        x--;
+    }
+    public void moveRight() {
+        x++;
+    }
+
+
     //  方块的图形类型
     public enum BlockType{
         L,T,I,S,Z,J,O
