@@ -13,9 +13,11 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.ronnie.tetris.R;
 import com.ronnie.tetris.controller.GameCenter;
 import com.ronnie.tetris.model.Block;
 import com.ronnie.tetris.model.BlockManager;
+import com.ronnie.tetris.model.GridModel;
 import com.ronnie.tetris.utils.Constants;
 
 public class GameView extends View {
@@ -79,6 +81,27 @@ public class GameView extends View {
         drawBackGroundGrid(canvas);
 
         DrawCurrentBlock(canvas);
+
+        //绘制面板固定的方格
+        drawFixedBlock(canvas);
+    }
+
+    private Bitmap defBitmap=BitmapFactory.decodeResource(getResources(), R.drawable.blue);
+    private void drawFixedBlock(Canvas canvas) {
+        GridModel[][] boards=GameCenter.defaultCenter.boards;
+        for (int i = 0; i < mRow; i++) {
+            for (int j = 0; j < mColumn; j++) {
+
+                GridModel grid=boards[i][j];
+                if (grid != null && grid.hasBlock()) {
+                    mRect.left=j*Constants.SIZE+mHorizentalSpace;
+                    mRect.right=mRect.left+Constants.SIZE;
+                    mRect.top=i*Constants.SIZE+mVerticalSpace;
+                    mRect.bottom=mRect.top+Constants.SIZE;
+                    canvas.drawBitmap(grid.getBitmap(getContext()),null,mRect,null);//bitmap不需要画笔
+                }
+            }
+        }
     }
 
     //绘制当前面板上的当前图形
@@ -86,6 +109,7 @@ public class GameView extends View {
     private void DrawCurrentBlock(Canvas canvas) {
         //获取当前的方块
         Block block= BlockManager.defaultManager.getCurrentBlock();
+        if (block==null) return;
         //得到他的形状资源是什么形状
         int[][] shapes=block.getShape();
         //创建位图  用位图画上去

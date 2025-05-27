@@ -4,6 +4,7 @@ public class BlockManager {
     private Block currentBlock;
     private Block nextBlock;
     private int column;
+
     public static final BlockManager defaultManager=new BlockManager();//单例设计模式
 
     //  将当前类的构造方法私有化 外部无法创建这个类的对象
@@ -30,6 +31,8 @@ public class BlockManager {
         return nextBlock;
     }
 
+    // 每次落地后调用
+
     //  获取当前方块
     public Block getCurrentBlock( int column) {
         if (currentBlock == null) {
@@ -41,11 +44,12 @@ public class BlockManager {
     }
 
     public Block getCurrentBlock() {
-        if (currentBlock == null){
-            //TODO x待定
-            currentBlock = new Block(column/2-1,0);
-        }
+        // if (currentBlock == null){
+        //     //TODO x待定
+        //     currentBlock = new Block(column/2-1,0);
+        // }
         return currentBlock;
     }
+
 
 }
