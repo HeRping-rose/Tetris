@@ -1,5 +1,7 @@
 package com.ronnie.tetris.controller;
 
+import android.app.Activity;
+
 import com.ronnie.tetris.model.Block;
 import com.ronnie.tetris.model.BlockManager;
 import com.ronnie.tetris.model.GridModel;
@@ -28,6 +30,9 @@ public class GameCenter {
 
     private boolean isStarted=false;
     private boolean isPaused=false;
+    public OnGameOverListener mGameOverListener;
+    public OnScoreChangeListener mScoreChangeListener;
+    private int mTotalScore = 0;
 
 
     //开始游戏
@@ -40,16 +45,15 @@ public class GameCenter {
         // //  将这个方块在预览视图中显示
 
         // previewView.showBlock(previewBlock);
-        if (!isPaused) {
+        if (!isPaused) {//开始新的
+            // 清空内容
+            boards = new GridModel[mRow][mColumn];
             showNext();//展示预览和当前方块
-
         }else {
             isPaused=false;
         }
 
-
         startTimer();//开启定时器
-
 
     }
     // 开始计时器
@@ -136,14 +140,21 @@ public class GameCenter {
 
             merge();//合并
             checkEliminateRows();//清除满行
-
-
-            showNext();//显示下一个
-            //切换为正常速度
-            changeToNormalSpeed();
-
+            // 判断游戏是否结束
             if (isGameOver()) {
-                stopTimer();
+                stopTimer();//暂停计时器
+            //     将游戏结束时间传递给外部
+                if (mGameOverListener != null) {
+                //     切换到主线程执行任务
+                    Activity activity=(Activity) mGameOverListener;
+                    activity.runOnUiThread(()->{
+                        mGameOverListener.gameover();
+                    });
+                }
+            }else {
+                showNext();//显示下一个
+                //切换为正常速度
+                changeToNormalSpeed();
             }
         } else {
             gameView.refresh();
@@ -156,7 +167,9 @@ public class GameCenter {
     //
     // 游戏结束检测  若方块刚合并后顶部已被占满，应终止游戏。
     private boolean isGameOver() {
+        boolean isFull;
         for (int j = 0; j < mColumn; j++) {
+            isFull=true;
             if (boards[0][j] != null && boards[0][j].hasBlock()) {
                 return true;
             }
@@ -245,6 +258,9 @@ public class GameCenter {
 
     //排除满行
     private void checkEliminateRows() {
+
+        int count = 0; //记录消除的行数
+
         for (int i = mRow - 1; i >= 0; i--) {
             boolean fullRow = true;//满行的标记
             for (int j = 0; j < mColumn; j++) {
@@ -256,8 +272,21 @@ public class GameCenter {
             if (fullRow) {
                 removeRow(i);
                 i++; // 当前行重新检查（因为上面的行下来了）
+                count++;
             }
         }
+        //计算当前分数
+        mTotalScore  += count * 100;
+
+        //将分数回调给外部
+        if (mScoreChangeListener != null){
+            //切换到主线程执行任务
+            Activity activity = (Activity)mScoreChangeListener;
+            activity.runOnUiThread(()->{
+                mScoreChangeListener.scoreChanged(mTotalScore);
+            });
+        }
+
     }
 
     //移除行操作
@@ -288,6 +317,9 @@ public class GameCenter {
 
     public interface OnGameOverListener{
         void gameover();
+    }
+    public interface OnScoreChangeListener{
+        void scoreChanged(int score);
     }
 
 }
