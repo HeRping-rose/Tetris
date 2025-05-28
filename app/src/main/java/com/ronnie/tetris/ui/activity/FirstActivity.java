@@ -115,6 +115,8 @@ public class FirstActivity extends AppCompatActivity {
                             tvTitle.setText("密码设置成功");
                             clearState();
                             prefsUtils.savePassword(currentPwd);
+                            // 密码设置成功之后跳转到  游戏页面
+                            startActivity(new Intent(this, GameActivity.class));
                         }else {
                             tvTitle.setText("两次密码不一致,请重新绘制");
                             showError();

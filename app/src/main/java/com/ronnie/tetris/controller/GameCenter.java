@@ -48,6 +48,9 @@ public class GameCenter {
         if (!isPaused) {//开始新的
             // 清空内容
             boards = new GridModel[mRow][mColumn];
+
+            // 清空分数
+            mTotalScore=0;
             showNext();//展示预览和当前方块
         }else {
             isPaused=false;
@@ -167,9 +170,8 @@ public class GameCenter {
     //
     // 游戏结束检测  若方块刚合并后顶部已被占满，应终止游戏。
     private boolean isGameOver() {
-        boolean isFull;
         for (int j = 0; j < mColumn; j++) {
-            isFull=true;
+
             if (boards[0][j] != null && boards[0][j].hasBlock()) {
                 return true;
             }
@@ -303,7 +305,6 @@ public class GameCenter {
         }
     }
 
-
     // 展示下一个方块
     private void showNext(){
         //生成一个预览方块图形
@@ -313,7 +314,6 @@ public class GameCenter {
         //刷新
         gameView.refresh();
     }
-
 
     public interface OnGameOverListener{
         void gameover();
