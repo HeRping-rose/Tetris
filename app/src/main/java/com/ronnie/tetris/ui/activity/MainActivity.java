@@ -1,4 +1,4 @@
-package com.ronnie.tetris;
+package com.ronnie.tetris.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
@@ -7,17 +7,14 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.ronnie.tetris.R;
 
 public class MainActivity extends AppCompatActivity {
 
