@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'com.ronnie.tetris'
+    namespace 'com.ronnie.game'
     compileSdk 35
 
     buildFeatures{
@@ -14,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ronnie.tetris"
+        applicationId "com.ronnie.game"
         minSdk 24
         targetSdk 35
         versionCode 1
