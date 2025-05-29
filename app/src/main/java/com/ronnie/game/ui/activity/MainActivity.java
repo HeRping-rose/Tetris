@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ronnie.game.R;
+import com.ronnie.game.controller.GameCenter;
 import com.ronnie.game.databinding.ActivityMainBinding;
+import com.ronnie.game.model.Block;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +24,17 @@ public class MainActivity extends AppCompatActivity {
         // 设置内容视图
         setContentView(mBinding.getRoot());
 
+
+        GameCenter.defaultGameCenter.preViewBlockView = mBinding.previewBlock;
+        GameCenter.defaultGameCenter.gameView= mBinding.gameView;
+
+        GameCenter.defaultGameCenter.start();
         mBinding.tvScore.setText("123");
+
+        mBinding.ivPlay.setOnClickListener(v->{
+            mBinding.previewBlock.showBlock(new Block(3,0));
+
+        });
 
 
     }
